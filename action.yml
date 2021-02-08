@@ -1,4 +1,4 @@
-name: 'slackbot'
+name: 'slackbot-file-uploader'
 description: 'A bot that will post a message and/or upload a file to slack'
 
 inputs:
