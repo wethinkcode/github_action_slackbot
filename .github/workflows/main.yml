@@ -11,7 +11,7 @@ jobs:
 
       - name: Notify Slack
         id: notify_slack
-        uses: /
+        uses: wethinkcode/github_action_slackbot@master
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_OAUTH }}
           slack-channel: ${{ secrets.SLACK_CHANNEL }}
