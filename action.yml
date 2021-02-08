@@ -10,11 +10,11 @@ inputs:
     description: 'Slack channel to post to'
     required: true
 
-  slack-send-file:
+  slack-file:
     description: 'File to upload'
     required: false
 
-  slack-send-message:
+  slack-message:
     description: 'Message to send with file'
     required: true
 

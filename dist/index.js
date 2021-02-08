@@ -527,13 +527,7 @@ const context = __nccwpck_require__(960)
 
 async function invoke() {
     try {
-        const message = context.getRequired("send-message")
-
-        if (message) {
-            await postMessage(message)
-        } else {
-            context.setFailed("No message passed")
-        }
+        await postMessage()
     } catch (err) {
         context.setFailed(`invoke failed ${err} : ${prettify_JSON(err)}`)
     }
@@ -584,11 +578,13 @@ const { prettify_JSON } = __nccwpck_require__(232);
 const { buildMessage } = __nccwpck_require__(58);
 const context = __nccwpck_require__(960)
 
-async function postMessage(message) {
+async function postMessage() {
     try {
         const token = context.getRequired("slack-bot-user-oauth-access-token");
         const channel = context.getRequired("slack-channel");
         const file = context.getRequired('slack-file')
+        const message = context.getRequired("slack-message")
+
 
         const payload = buildMessage(channel, message, get_optional());
         const result = await apiPost(token, payload, file)

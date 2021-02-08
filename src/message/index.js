@@ -8,7 +8,8 @@ async function postMessage() {
         const token = context.getRequired("slack-bot-user-oauth-access-token");
         const channel = context.getRequired("slack-channel");
         const file = context.getRequired('slack-file')
-        const message = context.getRequired("send-message")
+        const message = context.getRequired("slack-message")
+
 
         const payload = buildMessage(channel, message, get_optional());
         const result = await apiPost(token, payload, file)
