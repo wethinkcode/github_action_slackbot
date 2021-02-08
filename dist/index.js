@@ -412,7 +412,6 @@ exports.toCommandValue = toCommandValue;
 /***/ 881:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-const Buffer = __nccwpck_require__(293)
 const https = __nccwpck_require__(211)
 
 function getHeadersPostObj(token, path) {
@@ -614,14 +613,6 @@ module.exports = {
     postMessage
 }
 
-
-/***/ }),
-
-/***/ 293:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("buffer");;
 
 /***/ }),
 

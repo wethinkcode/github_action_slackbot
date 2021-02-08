@@ -18,12 +18,13 @@
     "url": "https://github.com/wethinkcode/github_action_slackbot/issues"
   },
   "homepage": "https://github.com/wethinkcode/github_action_slackbot#readme",
-  "dependencies": {
-    "@actions/core": "^1.2.6",
-    "@actions/github": "^4.0.0",
+  "devDependencies": {
+    "@vercel/ncc": "^0.26.1",
+    "eslint": "^7.17.0",
     "jest": "^26.6.3"
   },
-  "devDependencies": {
-    "eslint": "^7.19.0"
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0"
   }
 }

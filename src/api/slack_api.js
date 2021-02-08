@@ -1,4 +1,3 @@
-const Buffer = require('buffer')
 const https = require('https')
 
 function getHeadersPostObj(token, path) {
