@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint --fix *.js",
-    "test": "jest src  --config=jest.config.js"
+    "test": "jest src  --config=jest.config.js",
+    "program": ""
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,9 @@
   "devDependencies": {
     "@vercel/ncc": "^0.26.1",
     "eslint": "^7.17.0",
-    "jest": "^26.6.3"
+    "jest": "^26.6.3",
+    "filestream": "^5.0.0",
+    "slack": "^11.0.2"
   },
   "dependencies": {
     "@actions/core": "^1.2.6",

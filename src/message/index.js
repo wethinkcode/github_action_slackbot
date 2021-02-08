@@ -8,31 +8,16 @@ async function postMessage() {
         const token = context.getRequired("slack-bot-user-oauth-access-token");
         const channel = context.getRequired("slack-channel");
         const file = context.getRequired('slack-file')
-        const message = context.getRequired("slack-message")
 
 
-        const payload = buildMessage(channel, message, get_optional());
-        const result = await apiPost(token, payload, file)
+        const payload = buildMessage(channel, file);
+        await apiPost(token, payload)
 
-        context.setOutput("message", prettify_JSON(result));
+        context.setOutput("message", "Success!");
     } catch (error) {
+        console.log(error)
         context.setFailed(prettify_JSON(error));
     }
-}
-
-function get_optional() {
-    let opt = {};
-
-    const env = context.getEnv();
-    Object.keys(env)
-        .filter((key) => !!env[key])
-        .filter((key) => key.toUpperCase().startsWith("SLACK-OPTIONAL-"))
-        .forEach((key) => {
-            const slackKey = key.replace("SLACK-OPTIONALL-", "").toLowerCase();
-            opt[slackKey] = env[key];
-        });
-
-    return opt;
 }
 
 module.exports = {

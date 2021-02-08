@@ -1,61 +1,21 @@
-const https = require('https')
+const Slack = require('slack')
+const fs = require('fs')
 
-function getHeadersPostObj(token, path) {
-    return {
-        hostname: "slack.com",
-        port: 443,
-        path: path,
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
-            Authorization: `Bearer ${token}`
-        }
-    }
-}
-
-function post(token, path, message) {
-    return new Promise((resolve, reject) => {
-        const payload = JSON.stringify(message)
-        const options = getHeadersPostObj
-
-        const req = https.request(options(token, path), (res) => {
-            const chunks = [];
-
-            res.on("data", (chunk) => {
-                chunks.push(chunk)
-            })
-
-            res.on("end", () => {
-                const result = Buffer.concat(chunks).toString()
-                const response = JSON.parse(result);
-
-                resolve({
-                    statusCode: res.statusCode,
-                    statusMessage: res.statusMessage,
-                    ok: res.statusCode >= 200 && res.statusCode <= 299,
-                    result: result,
-                    response: response
-                })
-            })
-        })
-
-        req.on("error", (error) => {
-            reject(error)
-        })
-
-        req.write(payload)
-        req.end()
+async function postFile(token, file, channels) {
+    const web = new Slack({token: token})
+    const result = await web.files.upload({
+        channels: channels,
+        file: fs.createReadStream(file)
     })
+    return result['ok']
 }
 
-async function apiPost(token, message, fileIncluded = false) {
-    const path = "api/files.upload"
-    const result = await post(token, path, message, fileIncluded)
+async function apiPost(token, payload) {
+    const result = await postFile(token, payload['content'], payload['channels'])
 
-    if (!result || result.ok) {
+    if (result !== true) {
         throw `Error! ${JSON.stringify(result)}`
     }
-
     return result
 }
 

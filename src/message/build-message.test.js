@@ -3,12 +3,11 @@ const { buildMessage } = require("./build-message")
 describe("build message", () => {
     test("With Channel and Text", () => {
 
-        const message = buildMessage("channel", "text", "file")
+        const message = buildMessage("channels", "text")
 
         expect(message).toEqual({
-            channel: "channel",
-            text: "text",
-            file: "file",
+            channels: "channels",
+            content: "text"
         })
     })
 })
