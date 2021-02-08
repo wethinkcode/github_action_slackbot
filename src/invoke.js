@@ -4,13 +4,7 @@ const context = require('./common/context')
 
 async function invoke() {
     try {
-        const message = context.getRequired("send-message")
-
-        if (message) {
-            await postMessage(message)
-        } else {
-            context.setFailed("No message passed")
-        }
+        await postMessage()
     } catch (err) {
         context.setFailed(`invoke failed ${err} : ${prettify_JSON(err)}`)
     }

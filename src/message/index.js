@@ -3,11 +3,12 @@ const { prettify_JSON } = require("../common/common");
 const { buildMessage } = require("./build-message");
 const context = require('../common/context')
 
-async function postMessage(message) {
+async function postMessage() {
     try {
         const token = context.getRequired("slack-bot-user-oauth-access-token");
         const channel = context.getRequired("slack-channel");
         const file = context.getRequired('slack-file')
+        const message = context.getRequired("send-message")
 
         const payload = buildMessage(channel, message, get_optional());
         const result = await apiPost(token, payload, file)
