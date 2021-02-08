@@ -1,0 +1,24 @@
+name: 'slackbot'
+description: 'A bot that will post a message and/or upload a file to slack'
+
+inputs:
+  slack-bot-user-oauth-access-token:
+    description: 'Oauth Token'
+    required: true
+
+  slack-channel:
+    description: 'Slack channel to post to'
+    required: true
+
+  slack-send-file:
+    description: 'File to upload'
+    required: false
+
+
+outputs:
+  message:
+    description: 'Message that was posted'
+
+runs:
+  using: 'node15'
+  main: 'dist/index.js'

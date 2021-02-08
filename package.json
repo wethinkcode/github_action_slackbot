@@ -1,0 +1,29 @@
+{
+  "name": "github_action_slackbot",
+  "version": "0.0.1",
+  "description": "A Git hub action to use with slack bot to upload binaries with a message",
+  "main": "index.js",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint --fix *.js",
+    "test": "jest src  --config=jest.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wethinkcode/github_action_slackbot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wethinkcode/github_action_slackbot/issues"
+  },
+  "homepage": "https://github.com/wethinkcode/github_action_slackbot#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
+    "jest": "^26.6.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.19.0"
+  }
+}
