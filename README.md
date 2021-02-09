@@ -28,6 +28,7 @@ uses: wethinkcode/github_action_slackbot@v0.1
         slack-channel: some-channel-id
         slack-bot-function: file-upload
         slack-file: filename
+        slack_optional_input_filename: file-name
 ```
 
 ### Example usage for a message to send to a channel
@@ -41,7 +42,7 @@ uses: wethinkcode/github_action_slackbot@v0.1
             Some text that you may or may not want to send; up to you
 ```
 
-#### Supports optionals params with the following syntax
+#### Will eventually Support optionals params with the following syntax
 ```
-SLACK_OPTIONAL_INPUT_filename
+slack_optional_input_filename
 ```
