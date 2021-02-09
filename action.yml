@@ -1,9 +1,13 @@
-name: 'slackbot-file-uploader'
+name: 'slackbot-bot-automation'
 description: 'A bot that will post a message and/or upload a file to slack'
 
 inputs:
   slack-bot-user-oauth-access-token:
     description: 'Oauth Token'
+    required: true
+
+  slack-bot-function:
+    description: 'Function you want the bot to use'
     required: true
 
   slack-channel:
@@ -16,7 +20,7 @@ inputs:
 
   slack-message:
     description: 'Message to send with file'
-    required: true
+    required: false
 
 
 outputs:

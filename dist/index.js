@@ -824,17 +824,31 @@ module.exports = function validate(method, params) {
 const Slack = __nccwpck_require__(238)
 const fs = __nccwpck_require__(747)
 
-async function postFile(token, file, channels) {
+async function postFile(token, payload) {
+    payload['file'] = fs.createReadStream(payload['file-content'])
+    payload['channels'] = payload['channel']
     const web = new Slack({token: token})
-    const result = await web.files.upload({
-        channels: channels,
-        file: fs.createReadStream(file)
-    })
+    const result = await web.files.upload(payload)
     return result['ok']
 }
 
-async function apiPost(token, payload) {
-    const result = await postFile(token, payload['content'], payload['channels'])
+async function postMessage(token, payload) {
+    const web = new Slack({token: token})
+    const result = await web.chat.postMessage(payload);
+    return result['ok']
+}
+
+async function apiPost(token, payload, func) {
+    let result = false
+
+    switch(func) {
+        case "file-upload":
+            result = await postFile(token, payload)
+            break;
+        case "message-send":
+            result = await postMessage(token, payload)
+            break;
+    }
 
     if (result !== true) {
         throw `Error! ${JSON.stringify(result)}`
@@ -868,6 +882,8 @@ module.exports = {
 
 const core = __nccwpck_require__(526)
 
+const getEnv = () => process.env
+
 const getRequired = (name) => core.getInput(name, {required: true})
 
 const setOutput = (name, value) => core.setOutput(name, value)
@@ -877,7 +893,8 @@ const setFailed = (msg) => core.setFailed(msg)
 module.exports = {
     getRequired,
     setOutput,
-    setFailed
+    setFailed,
+    getEnv
 }
 
 
@@ -906,20 +923,30 @@ module.exports = invoke
 /***/ 58:
 /***/ ((module) => {
 
-function buildMessage (channels = "", content = "") {
+function buildMessage (channel = "", file = "", text = "", optional = {}) {
 
     const message = {
-        channels,
-        content
+        channel,
+        "file-content": file,
+        text
     }
 
-    message.channels = restoreEscapedTab(message.channels)
+    message.channel = restoreEscapedTab(message.channel)
+    message.text = restoreEscapedNewLine(message.text)
+
+    Object.keys(optional).forEach((name) => {
+        message[name] = optional[name]
+    })
 
     return message
 }
 
 function restoreEscapedTab(text){
     return text.replace(/\\t/g, "\t")
+}
+
+function restoreEscapedNewLine(text) {
+    return text.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n")
 }
 
 module.exports = {
@@ -941,17 +968,32 @@ async function postMessage() {
     try {
         const token = context.getRequired("slack-bot-user-oauth-access-token");
         const channel = context.getRequired("slack-channel");
-        const file = context.getRequired('slack-file')
+        const func = context.getRequired('slack-bot-function')
+        let file = context.getOptional('slack-file')
+        const text = context.getOptional('slack-message')
 
-
-        const payload = buildMessage(channel, file);
-        await apiPost(token, payload)
+        const payload = buildMessage(channel, file, text, getOptional());
+        await apiPost(token, payload, func)
 
         context.setOutput("message", "Success!");
     } catch (error) {
         console.log(error)
         context.setFailed(prettify_JSON(error));
     }
+}
+
+function getOptional() {
+    const string_match = "SLACK_OPTIONAL_INPUT_"
+    let ret = {}
+    const env = context.getEnv()
+    Object.keys(env)
+        .filter((key) => !!env[key])
+        .filter((key) => key.toUpperCase().startsWith(string_match))
+        .forEach((key) => {
+            const s_key = key.replace(string_match, "").toLowerCase()
+            ret[s_key] = env[key]
+        })
+    return ret
 }
 
 module.exports = {
