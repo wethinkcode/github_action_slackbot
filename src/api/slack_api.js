@@ -6,28 +6,29 @@ async function postFile(token, payload) {
     payload['channels'] = payload['channel']
     const web = new Slack({token: token})
     const result = await web.files.upload(payload)
-    return result['ok']
+    return [result['ok'], result]
 }
 
 async function postMessage(token, payload) {
     const web = new Slack({token: token})
     const result = await web.chat.postMessage(payload);
-    return result['ok']
+    return [result['ok'], result]
 }
 
 async function apiPost(token, payload, func) {
-    let result = false
+    let result_state = false
+    let result = ""
 
     switch(func) {
         case "file-upload":
-            result = await postFile(token, payload)
+            [result_state, result] = await postFile(token, payload)
             break;
         case "message-send":
-            result = await postMessage(token, payload)
+            [result_state, result] = await postMessage(token, payload)
             break;
     }
 
-    if (result !== true) {
+    if (result_state !== true) {
         throw `Error! ${JSON.stringify(result)}`
     }
     return result
