@@ -970,11 +970,11 @@ const context = __nccwpck_require__(630)
 
 async function postMessage() {
     try {
-        const token = '***REMOVED***' //context.getRequired("slack-bot-user-oauth-access-token");
-        const channel ='***REMOVED***'// context.getRequired("slack-channel");
-        const func = 'message-send' //context.getRequired('slack-bot-function')
-        let file = 'README.md' //context.getOptional('slack-file')
-        const text = "***REMOVED***" //context.getOptional('slack-message')
+        const token = context.getRequired("slack-bot-user-oauth-access-token");
+        const channel = context.getRequired("slack-channel");
+        const func = context.getOptional('slack-bot-function') || 'message-send';
+        let file = context.getOptional('slack-file')
+        const text = context.getOptional('slack-message')
 
         const payload = buildMessage(channel, file, text, optional = getOptional());
         await apiPost(token, payload, func)
