@@ -8,7 +8,7 @@ inputs:
 
   slack-bot-function:
     description: 'Function you want the bot to use'
-    required: true
+    required: false
 
   slack-channel:
     description: 'Slack channel to post to'
@@ -22,6 +22,17 @@ inputs:
     description: 'Message to send with file'
     required: false
 
+  slack_optional_input_link_names:
+    description: 'Find and link channel names and usernames.'
+    required: false
+
+  slack_optional_input_username:
+    description: Set your bot's user name. Must be used in conjunction with as_user set to false, otherwise ignored.
+    required: false
+
+  slack_optional_input_as_user:
+    description: Pass true to post the message as the authed user, instead of as a bot. Defaults to false.
+    required: false
 
 outputs:
   message:
