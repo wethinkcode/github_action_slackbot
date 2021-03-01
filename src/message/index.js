@@ -11,10 +11,11 @@ async function postMessage() {
         let file = context.getOptional('slack-file')
         const text = context.getOptional('slack-message')
         const ignore_empty = context.getOptional('ignore_if_empty') || false
+        const line_character_limit = context.getOptional('limit_of_line_character_to_ignore') || 1
 
         if (!ignore_empty) {
             await execute(channel, file, text, token, func)
-        } else if (text.length > 1) {
+        } else if (text.length > line_character_limit + 1) {
             await execute(channel, file, text, token, func)
         }
         context.setOutput("message", "Success!")

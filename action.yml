@@ -38,6 +38,10 @@ inputs:
     description: Do not send a message if the boolean is set
     required: false
 
+  limit_of_line_character_to_ignore:
+    description: Works with ignore_if_empty to handle what limit you want to ignore as a empty string, if you are using boiler plate text
+    required: false
+
 outputs:
   message:
     description: 'Message that was posted'
