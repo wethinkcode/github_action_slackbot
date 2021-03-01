@@ -34,6 +34,10 @@ inputs:
     description: Pass true to post the message as the authed user, instead of as a bot. Defaults to false.
     required: false
 
+  ignore_if_empty:
+    description: Do not send a message if the boolean is set
+    required: false
+
 outputs:
   message:
     description: 'Message that was posted'

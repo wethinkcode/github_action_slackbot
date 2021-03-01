@@ -10,14 +10,23 @@ async function postMessage() {
         const func = context.getOptional('slack-bot-function') || 'message-send';
         let file = context.getOptional('slack-file')
         const text = context.getOptional('slack-message')
+        const ignore_empty = context.getOptional('ignore_if_empty') || false
 
-        const payload = buildMessage(channel, file, text, optional = getOptional());
-        await apiPost(token, payload, func)
-        context.setOutput("message", "Success!");
+        if (!ignore_empty) {
+            await execute(channel, file, text, token, func)
+        } else if (text.length > 1) {
+            await execute(channel, file, text, token, func)
+        }
+        context.setOutput("message", "Success!")
     } catch (error) {
         console.log(error)
-        context.setFailed(prettify_JSON(error));
+        context.setFailed(prettify_JSON(error))
     }
+}
+
+async function execute(channel, file, text, token, func) {
+    const payload = buildMessage(channel, file, text, optional = getOptional())
+    await apiPost(token, payload, func)
 }
 
 function getOptional() {
