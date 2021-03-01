@@ -13,7 +13,7 @@ async function postMessage() {
         const ignore_empty = context.getOptional('ignore_if_empty') || false
         const line_character_limit = context.getOptional('limit_of_line_characters_to_ignore') || 1
 
-        if (!ignore_empty) {
+        if (!ignore_empty || func == 'file-upload') {
             await execute(channel, file, text, token, func)
         } else if (text.length > line_character_limit + 1) {
             await execute(channel, file, text, token, func)

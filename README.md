@@ -19,6 +19,31 @@ This is the file you want to send
 ### slack-message
 The test message you want to send
 
+## slack_optional_input_link_names
+### Slack Link Names
+This allows us to use the @User command
+
+## slack_optional_input_username
+### Slack Username
+This allows us to set a username
+
+## slack_optional_input_as_user
+### Slack Input as User
+This allows us to post as a user
+
+## ignore_if_empty
+### Ignore empty messages
+This will prevent slackbot from posting a message if no test has been passed through
+
+## limit_of_line_characters_to_ignore
+### How many character do we want before we start ignoring. (requires `ignore_if_empty`)
+
+This will allow us to prevent messages being sent if it has a "starting" default e.g.
+```
+This is my really cool message from slack bot!:
+```
+It is 47 characters so we set this value to 47 and it will look past this value to see if the string empty.
+
 
 ### Example usage for file upload
 ```
@@ -45,4 +70,17 @@ uses: wethinkcode/github_action_slackbot@v0.1
 #### Will eventually Support optionals params with the following syntax
 ```
 slack_optional_input_filename
+```
+
+# Testing
+Integration testing can be done based on the `.env` file
+
+Bash, ZSH
+```bash
+eval $(cat .env) node e2e/e2e.js
+```
+
+Fish
+```bash
+eval (cat .env) node e2e/e2e.js
 ```
