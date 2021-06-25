@@ -16,31 +16,34 @@ const { buildMessage } = require("../src/message/build-message");
         const channel = process.env.SLACK_CHANNEL;
         const func = process.env.SLACK_BOT_FUNCTION || 'message-send';
         let file = process.env.SLACK_FILE || ""
-        const text = process.env.SLACK_MESSAGE
-        const ignore_empty = process.env.IGNORE_IF_EMPTY || false
-        const line_character_limit = process.env.LIMIT_OF_LINE_CHARACTERS_TO_INGORE || 1
+        const text_body = process.env.SLACK_MESSAGE_BODY || ""
+        const text_header = process.env.SLACK_MESSAGE_HEADER || ""
+        const text = get_text(text_header, text_body)
 
-        console.log(func)
-        if ( func === 'file-upload' || !ignore_empty) {
+        if (text.length > 0 || func == 'file-upload') {
             await execute(channel, file, text, token, func)
-            console.log("SUCCESS no import ignored")
-            return
-        } else if (text.length > +line_character_limit + 1) {
-            console.log(`Length of ${line_character_limit}`)
-            console.log(`Message: ${text}`)
-            await execute(channel, file, text, token, func)
-            console.log(`SUCCESS with ignored ${ignore_empty} and limit ${line_character_limit}`)
-            return
+            console.log("message: Success!")
+        } else {
+            console.log("message: Nothing done!")
         }
-        console.log("Failure no function done")
     } catch(err) {
         console.error(err)
     }
 })();
 
 
+function get_text(header, body) {
+    if (body.length > 0) {
+        if (header.length > 0) {
+            return header + "\n" + body
+        } else {
+            return body
+        }
+    }
+    return ""
+}
+
 async function execute(channel, file, text, token, func) {
-    console.log(`${channel}::${file}::${text}::${token}::${func}`)
     const payload = buildMessage(channel, file, text, optional = getOptional())
     console.log("payload: ", payload)
     await apiPost(token, payload, func)

@@ -9,16 +9,16 @@ async function postMessage() {
         const channel = context.getRequired("slack-channel");
         const func = context.getOptional('slack-bot-function') || 'message-send';
         let file = context.getOptional('slack-file')
-        const text = context.getOptional('slack-message')
-        const ignore_empty = context.getOptional('ignore_if_empty') || false
-        const line_character_limit = context.getOptional('limit_of_line_characters_to_ignore') || 1
+        const text_header = context.getOptional('slack-message-header') || ""
+        const text_body = context.getOptional('slack-message-body') || ""
+        const text = get_text(text_header, text_body)
 
-        if (!ignore_empty || func == 'file-upload') {
+        if (text.length > 0 || func == 'file-upload') {
             await execute(channel, file, text, token, func)
-        } else if (text.length > line_character_limit + 1) {
-            await execute(channel, file, text, token, func)
+            context.setOutput("message", "Success!")
+        } else {
+            context.setOutput("message", "Nothing done")
         }
-        context.setOutput("message", "Success!")
     } catch (error) {
         console.log(error)
         context.setFailed(prettify_JSON(error))
@@ -28,6 +28,17 @@ async function postMessage() {
 async function execute(channel, file, text, token, func) {
     const payload = buildMessage(channel, file, text, optional = getOptional())
     await apiPost(token, payload, func)
+}
+
+function get_text(header, body) {
+    if (body.length > 0) {
+        if (header.length > 0) {
+            return header + "\n" + body
+        } else {
+            return body
+        }
+    }
+    return ""
 }
 
 function getOptional() {

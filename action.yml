@@ -18,8 +18,12 @@ inputs:
     description: 'File to upload'
     required: false
 
-  slack-message:
-    description: 'Message to send with file'
+  slack-message-header:
+    description: 'Message to send: header, used with conjuction of body (If there is content), header will always print'
+    required: false
+
+  slack-message-body:
+    description: 'Message to send: If body is empty, nothing will print'
     required: false
 
   slack_optional_input_link_names:
@@ -34,17 +38,9 @@ inputs:
     description: Pass true to post the message as the authed user, instead of as a bot. Defaults to false.
     required: false
 
-  ignore_if_empty:
-    description: Do not send a message if the boolean is set
-    required: false
-
-  limit_of_line_characters_to_ignore:
-    description: Works with ignore_if_empty to handle what limit you want to ignore as a empty string, if you are using boiler plate text
-    required: false
-
 outputs:
   message:
-    description: 'Message that was posted'
+    description: 'If the message sent was a success or not'
 
 runs:
   using: 'node12'

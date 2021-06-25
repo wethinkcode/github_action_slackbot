@@ -16,8 +16,11 @@ You need to specify which function to call from the bot
 This is the file you want to send
 
 ## message-send
-### slack-message
-The test message you want to send
+### slack-message-header
+'Message to send: header, used with conjuction of body (If there is content), header will always print
+
+### slack-message-body
+Message to send: If body is empty, nothing will print
 
 ## slack_optional_input_link_names
 ### Slack Link Names
@@ -30,19 +33,6 @@ This allows us to set a username
 ## slack_optional_input_as_user
 ### Slack Input as User
 This allows us to post as a user
-
-## ignore_if_empty
-### Ignore empty messages
-This will prevent slackbot from posting a message if no test has been passed through
-
-## limit_of_line_characters_to_ignore
-### How many character do we want before we start ignoring. (requires `ignore_if_empty`)
-
-This will allow us to prevent messages being sent if it has a "starting" default e.g.
-```
-This is my really cool message from slack bot!:
-```
-It is 47 characters so we set this value to 47 and it will look past this value to see if the string empty.
 
 
 ### Example usage for file upload
@@ -63,7 +53,7 @@ uses: wethinkcode/github_action_slackbot@v0.1
         slack-bot-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_TOKEN }}
         slack-channel: some-channel-id
         slack-bot-function: message-send
-        slack-message: /
+        slack-message-body: /
             Some text that you may or may not want to send; up to you
 ```
 
